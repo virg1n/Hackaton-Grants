@@ -7,6 +7,7 @@ import nextBtn from "../img/next.png";
 import quesson from "../img/qession.png";
 import crest from '../img/crest.png';
 import axios from '../utils/axios.js'
+import {sha256} from 'crypto-hash';
 
 class RegisterPage extends Component{
     constructor(props){
@@ -55,12 +56,13 @@ class RegisterPage extends Component{
             password: this.state.password
         };
         console.log(fromData);
+        const pass = await sha256(this.state.password)
         const {data} = await axios.post('/user/registration', {
             FIO: this.state.fullname,
             IIN: this.state.IIN,
             email: this.state.email,
             number: this.state.number,
-            password: this.state.password
+            password: pass
         })
         window.localStorage.setItem('token', data.token)
         // const isValid = await userScema.isValid(fromData);
